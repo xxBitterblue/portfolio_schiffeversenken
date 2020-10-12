@@ -1,30 +1,33 @@
 <template>
     <div>
         <div v-if="is_setting && (x && y)" class="btn-group"
-                    :style="{top: y-20 + 'px', left: x + 'px'}">
+                    :style="{top: y - height + 'px', left: x + 'px'}">
                         <button v-on:click="flip_ship">Flip</button> 
                         <button v-on:click="delete_ship">Delete</button>
                         <button v-on:click="close_ship_options">Close</button>
         </div>
-            <div class="ship_in_game"
-                v-if="x && y"
+            <div v-if="x && y" class="ships_in_game">
+                <div class="ship_in_game"               
                 v-on:click="open_ship_options"
                 :draggable='dragallowed'
                 @dragstart="dragStart"
                 @dragover.stop
-                :style="{top: y + 'px', left: x + 'px', width: width + 'px', height: height + 'px', backgroundImage: 'url('+image_path+')', transform: 'rotate(' + image_orientation + 'deg)'}"
-            >
-                <p>{{life}}  {{size}}</p>
+                :style="{top: y + 'px', left: x + 'px', width: width + 'px', height: height + 'px', backgroundImage: 'url('+image_path+')'}"
+                />
+                <p :style="{top: y + (height) + 'px', left: x + 'px'}">LP: {{life}}</p>
             </div>
-            <div 
-                v-else
-                :draggable='dragallowed'
-                @dragstart="dragStart"
-                @dragover.stop
-                class="ship_in_container"
-                :style="{width: width + 'px', height: height + 'px', backgroundImage: 'url('+image_path+')', transform: 'rotate(' + image_orientation + 'deg)'}"
-            >
-                <p>{{ size }}</p>
+            <div v-else class="ships_in_container">
+                <div  
+                    :draggable='dragallowed'
+                    @dragstart="dragStart"
+                    @dragover.stop
+                    class="ship_in_container"
+                    :style="{width: width + 'px', height: height + 'px', backgroundImage: 'url('+image_path+')'}"
+                />
+                <div class="ship_information_container">
+                    <p>Size: {{ size }}</p>
+                    <p>Life: {{ life }}</p>
+                </div>
             </div>  
     </div>
 </template>
@@ -49,10 +52,10 @@ import * as statics from "../../helper/Statics.js"
 
         setup(props, context) {
             const is_setting = ref(false)
-            let width = computed(() => props.alignment == statics.horizontal_alignment ? statics.base_size * props.size : statics.base_size)
+            let width = computed(() => props.alignment == statics.horizontal_alignment ? statics.base_size * props.size : statics.base_size )
             let height = computed(() => props.alignment == statics.vertical_alignment ? statics.base_size * props.size : statics.base_size)
-            let image_path = computed(() => require('@/assets/Ship_1_Alive.png'))
-            let image_orientation = computed(() => props.alignment == statics.vertical_alignment ? 90 :  0)
+            let image_path = computed(() => require('@/assets/Ship_' + props.size + '_Alive_' + props.alignment + '.png'))
+
             function dragStart (e) {
                 e.dataTransfer.dropEffect = "copy"
                 e.dataTransfer.setData('ship_id', props.id)
@@ -92,8 +95,7 @@ import * as statics from "../../helper/Statics.js"
                 close_ship_options,
                 width,
                 height,
-                image_path,
-                image_orientation
+                image_path
             }
         }
     })
@@ -103,13 +105,26 @@ import * as statics from "../../helper/Statics.js"
     div .ship_in_game {
         position: absolute;
         text-align: center;
+    }
 
+    div .ships_in_game p {
+        position: absolute;
+        font-size: 15px;
+    }
+
+    div .ships_in_container {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        padding: 10px;
     }
 
     div .ship_in_container {
         position: relative;
         text-align: center;
-
+    }
+    
+    div .ships_in_container p {
+        margin: 5px;
     }
 
     div .btn-group {
@@ -117,21 +132,21 @@ import * as statics from "../../helper/Statics.js"
     }
 
     .btn-group button {
-    border: 0.5px solid;
-    color: white;
-    padding: 1px 2px;
-    cursor: pointer;
-    float: left;
-    background-color: black;
+        border: 0.5px solid;
+        color: white;
+        padding: 1px 2px;
+        cursor: pointer;
+        float: left;
+        background-color: black;
     }
 
     .btn-group button:not(:last-child) {
-    border-right: none;
+        border-right: none;
     }
-    
+
     .btn-group:after {
-    content: "";
-    clear: both;
-    display: table;
+        content: "";
+        clear: both;
+        display: table;
     }
 </style>

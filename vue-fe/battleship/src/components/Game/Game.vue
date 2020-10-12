@@ -1,9 +1,12 @@
 <template>
     <div>
         <div v-if="is_logged_in">
-            <ShipContainer />
-            <Score ref="score_display"/> 
-            <div>
+            <h1>Willkommen zu einer Runde Schiffe versenken!</h1>
+            <div class="ship_score_container">
+                <ShipContainer />
+                <Score ref="score_display"/>     
+            </div>
+            <div class="board_div">
                 <Board ref="player_board" :player_field="true"/>
                 <Board ref="enemy_board" :player_field="false"/>
             </div>
@@ -73,3 +76,10 @@ import router from "@/router"
         }
     })
 </script>
+
+<style>
+    div .ship_score_container {
+        display: inline-grid;
+        grid-template-columns: 50% 50%;
+    }
+</style>

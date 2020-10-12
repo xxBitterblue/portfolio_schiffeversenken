@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="score_container">
         <p>Deine Lebenspunkte: {{ player_life_points }}</p>
         <p>Gegnerische Lebenspunkte: {{ enemy_life_points}}</p>
     </div>
@@ -45,3 +45,14 @@ import use_user from "../../composable/User"
         }
     })
 </script>
+
+<style>
+    div .score_container {
+        width: 250px;
+        height: 100px;
+        border:1px solid black;
+        position: relative;
+        margin-left: 20px;
+        padding-left: 10px;
+    }
+</style>

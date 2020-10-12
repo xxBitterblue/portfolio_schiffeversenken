@@ -20,7 +20,7 @@
             <div
                 v-if="last_attack_click" 
                 class="last_attack_click"
-                :style="{top: last_attack_click[1] + 'px', left: last_attack_click[0] + 'px'}"
+                :style="{top: (last_attack_click[1] - half_attack_size) + 'px', left: (last_attack_click[0] - half_attack_size) + 'px'}"
             />
         </div>
         <div>
@@ -74,6 +74,7 @@ export default defineComponent ({
         
         let last_attack_click = ref(null)
         const board_container = ref(null)
+        const half_attack_size = statics.attack_size / 2
         
         const ship_list = ref([])
         const enemy_id = ref("")
@@ -81,8 +82,9 @@ export default defineComponent ({
 
         function last_click(e) {
             if (!is_player_field.value) {
-                let x = e.pageX - board_container.value.offsetLeft
-                let y = e.pageY - board_container.value.offsetTop
+                
+                let x = (e.pageX - board_container.value.offsetLeft)
+                let y = (e.pageY - board_container.value.offsetTop)
                 if(!(x + statics.attack_size > statics.board_size || y + statics.attack_size > statics.board_size)){
                     last_attack_click.value = [x, y]
                 }
@@ -227,7 +229,8 @@ export default defineComponent ({
             drop,
             delete_ship,
             flip_ship,
-            error_text
+            error_text,
+            half_attack_size
         }
     }
 })
@@ -249,8 +252,13 @@ export default defineComponent ({
 
     div .last_attack_click {
         position: absolute;
-        background-color: orange;
+        background-image: url('../../assets/Last_click_img.png');
+        background-repeat: no-repeat;
         height: 20px;
         width: 20px;
+    }
+
+    button {
+        margin-top: 20px;
     }
 </style>
