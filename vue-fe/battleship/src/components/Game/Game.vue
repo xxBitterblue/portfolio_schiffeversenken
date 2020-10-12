@@ -50,7 +50,7 @@ import router from "@/router"
                 } else {
                     console.error("Error: No socket")
                 }
-                is_logged_in.value = true//user.value[`is_logged_in`]
+                is_logged_in.value = user.value[`is_logged_in`]
             })
 
             function handleMsg(e) {

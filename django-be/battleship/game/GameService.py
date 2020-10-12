@@ -3,8 +3,6 @@ from game.CustomErrors.GameOrPlayerNotFoundError import GameOrPlayerNotFoundErro
 from .models import Ship, Game, Board
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-import numpy as np
-from numpy.linalg import norm
 import math
 
 
@@ -118,14 +116,6 @@ class GameService:
 
     def calculate_distances(self, bounding_box, x, y):
         """Calculates the distance of a ship represented as bounding box and x,y coordinates."""
-        bounding_box_numpy = [np.array(box) for box in bounding_box]
-        hit_point = np.array([x, y])
-        distance = [
-            norm(np.cross(bounding_box_numpy[0] - bounding_box_numpy[1], bounding_box_numpy[1] - hit_point)) / norm(bounding_box_numpy[0] - bounding_box_numpy[1]),
-            norm(np.cross(bounding_box_numpy[0] - bounding_box_numpy[2], bounding_box_numpy[2] - hit_point)) / norm(bounding_box_numpy[0] - bounding_box_numpy[2]),
-            norm(np.cross(bounding_box_numpy[1] - bounding_box_numpy[3], bounding_box_numpy[3] - hit_point)) / norm(bounding_box_numpy[1] - bounding_box_numpy[3]),
-            norm(np.cross(bounding_box_numpy[2] - bounding_box_numpy[3], bounding_box_numpy[3] - hit_point)) / norm(bounding_box_numpy[2] - bounding_box_numpy[3])
-        ]
 
         rect_x_max = max([x[0] for x in bounding_box])
         rect_x_min = min([x[0] for x in bounding_box])
